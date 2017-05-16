@@ -1,10 +1,10 @@
 restify = require 'restify'
 builder = require 'botbuilder'
-{ Adapter } = require 'hubot'
+{ Adapter, TextMessage, User } = require 'hubot'
 
 class UniversalBotAdapter extends Adapter
   constructor: (robot) ->
-    super
+    super robot
 
     @robot = robot
 
@@ -23,30 +23,32 @@ class UniversalBotAdapter extends Adapter
     @bot = new builder.UniversalBot @connector
     @server.post '/api/messages', @connector.listen()
 
-    @bot.dialog '/', @gotSession, @gotSessionResults
+    @bot.dialog '/', @gotSession
 
-  gotSession: (sesh) =>
-    console.log "sesh", sesh
-    @session = sesh
+  gotSession: (session, args, next) =>
+    user = new User(session.message.user.id, session.message.user)
 
-  gotSessionResults: (sesh, results) =>
-    @session = sesh
-    console.log "results", results
-    @robot.logger.info "results", results
+    selfName = session.message.text.replace(/<at>(.*)<\/at>.*/, '$1')
+    @robot.name = selfName
 
-    @robot.receive results.response.entity
+    messageText = session.message.text.replace(/<at>/i, '').replace(/<\/at>\W*/i, ' ')
+    message = new TextMessage(user, messageText)
+
+    @session = session
+    @robot.receive message
 
   listening: () =>
     @robot.logger.info '%s listening to %s', @server.name, @server.url
 
   send: (envelope, strings...) =>
+    console.log("send", envelope, strings)
     for string in strings
       @robot.logger.info "sending", string
       @session.send string
 
   reply: (envelope, strings...) =>
+    console.log(envelope, strings)
     for string in strings
-      @robot.logger.info "sending", string
       @session.send string
 
 exports.UniversalBotAdapter = UniversalBotAdapter
