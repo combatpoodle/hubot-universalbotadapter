@@ -1,17 +1,15 @@
 {
   "name": "hubot-universalbotadapter",
   "version": "0.0.1",
-  "description": "",
+  "description": "Universal Bot Adapter for Microsoft's bot framework",
   "main": "index.coffee",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Israel Shirk <israelshirk@gmail.com>",
+  "license": "MIT",
   "dependencies": {
     "botbuilder": "^3.7.0",
-    "browserbot": "^0.2.1",
-    "hubot": "^2.19.0",
     "restify": "^4.3.0"
   }
 }
