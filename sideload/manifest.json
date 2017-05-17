@@ -1,0 +1,34 @@
+{
+  "$schema": "https://statics.teams.microsoft.com/sdk/v1.0/manifest/MicrosoftTeams.schema.json", 
+  "manifestVersion": "1.0",
+  "version": "0.0.1",
+  "id": "<uuid>", 
+  "packageName": "com.scentsy.hubot",
+  "developer": {
+    "name": "Israel Shirk",
+    "websiteUrl": "https://scentsy.com/",
+    "privacyUrl": "https://scentsy.com/",
+    "termsOfUseUrl": "https://scentsy.com/"
+  },
+  "name": {
+    "short": "hubot",
+    "full": "hubot"
+  },
+  "description": {
+    "short": "hubot",
+    "full": "hubot"
+  },
+  "icons": {
+    "outline": "hubot-20x20px.jpg",
+    "color": "hubot-96x96px-min.jpg"
+  },
+  "accentColor": "#000000",
+  "bots": [
+    {
+      "botId": "<botId>",
+      "needsChannelSelector": "false",
+      "isNotificationOnly": "false",
+      "scopes": [ "team", "personal" ]
+    }
+  ]
+}
