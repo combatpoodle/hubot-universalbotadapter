@@ -40,13 +40,11 @@ class UniversalBotAdapter extends Adapter
     process.exit 0
 
   send: (envelope, strings...) =>
-    console.log("send", envelope, strings)
     for string in strings
       @robot.logger.info "sending", string
       @session.send string
 
   reply: (envelope, strings...) =>
-    console.log(envelope, strings)
     for string in strings
       @session.send string
 
