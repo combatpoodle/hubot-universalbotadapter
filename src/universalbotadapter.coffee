@@ -1,17 +1,11 @@
 restify = require 'restify'
 builder = require 'botbuilder'
-{ Adapter, TextMessage, User } = require 'hubot'
+{ Adapter, TextMessage } = require 'hubot'
 
 class UniversalBotAdapter extends Adapter
-  constructor: (robot) ->
-    super robot
-
-    @robot = robot
-
+  run: ->
     @server = restify.createServer()
     @robot.logger.info "Connector startup"
-
-    server = @server
 
     @server.listen process.env.port || process.env.PORT || 3978, @listening
 
@@ -20,13 +14,13 @@ class UniversalBotAdapter extends Adapter
       appPassword: process.env.MICROSOFT_APP_PASSWORD
     }
 
-    @bot = new builder.UniversalBot @connector
+    bot = new builder.UniversalBot @connector
     @server.post '/api/messages', @connector.listen()
 
-    @bot.dialog '/', @gotSession
+    bot.dialog '/', @gotMessage
 
-  gotSession: (session, args, next) =>
-    user = new User(session.message.user.id, session.message.user)
+  gotMessage: (session, args, next) =>
+    user = @robot.brain.userForId session.message.user.id, name: session.message.user.name
 
     selfName = session.message.text.replace(/<at>(.*)<\/at>.*/, '$1')
     @robot.name = selfName
@@ -35,10 +29,15 @@ class UniversalBotAdapter extends Adapter
     message = new TextMessage(user, messageText)
 
     @session = session
-    @robot.receive message
+    @receive message
 
   listening: () =>
     @robot.logger.info '%s listening to %s', @server.name, @server.url
+    @emit 'connected'
+
+  shutdown: () ->
+    @robot.shutdown()
+    process.exit 0
 
   send: (envelope, strings...) =>
     console.log("send", envelope, strings)
