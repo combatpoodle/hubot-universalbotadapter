@@ -1,6 +1,6 @@
 {
   "name": "hubot-universalbotadapter",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Universal Bot Adapter for Microsoft's bot framework",
   "main": "index.coffee",
   "scripts": {
